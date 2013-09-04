@@ -1,4 +1,4 @@
-jenkins-debian-glue (0.6.0.7ab545a) unstable; urgency=low
+jenkins-debian-glue (0.6.0~20130919.git7ab545a) unstable; urgency=low
 
   * Building from a specific git tag for internal WMF use
 
