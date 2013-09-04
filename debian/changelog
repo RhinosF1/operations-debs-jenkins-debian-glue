@@ -1,3 +1,9 @@
+jenkins-debian-glue (0.6.0.7ab545a) unstable; urgency=low
+
+  * Building from a specific git tag for internal WMF use
+
+ -- Andrew Bogott <abogott@wikimedia.org>  Mon, 23 Sep 2013 23:26:58 +0200
+
 jenkins-debian-glue (0.6.0) unstable; urgency=low
 
   The "nothing is better than a children's smile" release ／人◕‿◕人＼
