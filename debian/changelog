@@ -1,3 +1,15 @@
+jenkins-debian-glue (0.6.0~20131022.git9d3a3d4) unstable; urgency=low
+
+  Incorporate recent upstream changes which are hitting us by merging
+  upstream code to 9d3a3d4 (v0.6.0-43-g9d3a3d4).  Includes two fixes
+  I have made which are causing us issues:
+
+  Antoine Musso (2):
+      piuparts_wrapper: quote scriptsdir in piuparts cmd
+      piuparts_wrapper: unset scripts dir when non existent
+
+ -- Antoine "hashar" Musso <hashar@free.fr>  Tue, 22 Oct 2013 13:51:18 +0000
+
 jenkins-debian-glue (0.6.0~20130919.git7ab545a) unstable; urgency=low
 
   * Building from a specific git tag for internal WMF use
