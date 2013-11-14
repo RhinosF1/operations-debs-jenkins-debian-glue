@@ -1,3 +1,25 @@
+jenkins-debian-glue (0.7.1-6-gf618f4d-0) unstable; urgency=low
+
+  Cherry pick 6 changes ahead of v0.7.1 for Wikimedia. Done by adding a
+  debian/gbp.conf which points gbp to a specific treeish: f618f4d35a
+
+  This bump Wikimedia build to upstream version
+  f618f4d35a88efd1d3529217c49df5892899aecd:
+
+  Antoine Musso (1):
+    piuparts_wrapper: only expand scriptsdir when it is set
+
+  Carl Fürstenberg (1):
+    Allow debian-glue to read gbp.conf
+
+  Michael Prokop (4):
+    generate-reprepro-codename: refer to /etc/jenkins/debian_glue
+    Lock access to conf/incoming file
+    build-and-provide-package: get rid of dependency on dcmd
+    Rework new gbp.conf handling
+
+ -- Antoine Musso <hashar@free.fr>  Thu, 14 Nov 2013 15:30:26 +0000
+
 jenkins-debian-glue (0.7.1) unstable; urgency=low
 
   * [80057b0] Drop jenkins-debian-glue-repoenv package + add dependency on
