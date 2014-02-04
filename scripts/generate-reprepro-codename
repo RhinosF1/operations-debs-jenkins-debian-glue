@@ -3,6 +3,12 @@
 set -x
 set -e
 
+bailout() {
+  [ -n "${1:-}" ] && EXIT="${1}" || EXIT=0
+  [ -n "${2:-}" ] && echo "$2" >&2
+  exit $EXIT
+}
+
 if [ -r /etc/jenkins/debian_glue ] ; then
   . /etc/jenkins/debian_glue
 fi
@@ -51,11 +57,15 @@ fi
 if [ -z "${KEY_ID:-}" ] ; then
   echo "*** WARNING: No KEY_ID found, can not sign repository. ***"
   echo "***          Generate a key executing 'gpg --gen-key' as user root"
-  echo "***          and then set up /etc/jenkins/debian_glue, see"
-  echo "***          /usr/share/jenkins-debian-glue/examples/debian_glue"
+  echo "***          and then adjust /etc/jenkins/debian_glue."
 fi
 
-if grep -q "^Codename: ${REPOS}$" "${REPOSITORY}"/conf/distributions ; then
+# lock access to file to avoid duplicate entries when two generate-reprepro-codename
+# runs happen at the very same time
+(
+flock --timeout 5 9 || bailout 1 "Error: could not lock file ${REPOSITORY}/conf/distributions, giving up."
+
+if grep -q "^\(Codename\|Suite\): ${REPOS}$" "${REPOSITORY}"/conf/distributions ; then
   echo "Codename/repository $REPOS exists already, ignoring request to add again."
   exit 0
 fi
@@ -75,5 +85,7 @@ if [ -n "${KEY_ID:-}" ] ; then
 fi
 
 echo "Added $REPOS as new codename/repos to the reprepro configuration."
+
+) 9>/var/lock/jdg-generate-reprepro-codename."$(id -un)" || bailout 1 "Error while generating reprepro codename/repos."
 
 # vim:foldmethod=marker ts=2 ft=sh ai expandtab sw=2

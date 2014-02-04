@@ -45,6 +45,12 @@ gbp_opts() {
 }
 
 version_information() {
+  # required for dpkg-parsechangelog
+  if ! [ -r debian/changelog ] ; then
+    echo "Error: debian/changelog could not be read. Is this really a Debian package?" >&2
+    return 1
+  fi
+
   # retrieve and adjust information
   ORIG_VERSION=$(dpkg-parsechangelog --count 1 | awk '/^Version/ {print $2}')
   INCREASED_VERSION=$(increase-version-number $ORIG_VERSION)
@@ -91,6 +97,49 @@ dch_opts() {
     DCH_EXTRA_OPTS="--new-version=${VERSION_STRING}"
     echo "Using extra git-dch options (${DCH_EXTRA_OPTS})"
   fi
+}
+
+# support overrides from gbp.conf
+gbp_conf() {
+
+  if [ "${IGNORE_GBP_CONF:-}" = "true" ] ; then
+    echo "Skipping gbp_conf execution as requested via IGNORE_GBP_CONF ***"
+    return 0
+  fi
+
+  # List of config files in order
+  gbp_conf_files=(
+  /etc/git-buildpackage/gbp.conf
+  ~/.gbp.conf
+  .gbp.conf
+  debian/gbp.conf
+  .git/gbp.conf
+  )
+
+  # Defaults
+  UPSTREAM_BRANCH="upstream"
+  DEBIAN_BRANCH="debian"
+  PRISTINE_TAR="false"
+
+  for gbp_conf_file in "${gbp_conf_files[@]}"; do
+    if [ -f ${gbp_conf_file} ]; then
+      local value;
+      value=$(git config --file ${gbp_conf_file} --get DEFAULT.upstream-branch 2>&- || true)
+      if [ -n "${value:-}" ]; then
+        UPSTREAM_BRANCH=${value}
+      fi
+
+      value=$(git config --file ${gbp_conf_file} --get DEFAULT.debian-branch 2>&- || true)
+      if [ -n "${value:-}" ]; then
+        DEBIAN_BRANCH=${value}
+      fi
+
+      value=$(git config --file ${gbp_conf_file} --bool --get DEFAULT.pristine-tar 2>&- || true)
+      if [ -n "${value:-}" ]; then
+        PRISTINE_TAR=${value}
+      fi
+    fi
+  done
 }
 
 create_local_branch() {
@@ -265,10 +314,15 @@ cd "$SOURCE_DIRECTORY"
 
 git_cleanup
 
+# gbp.conf handling
+gbp_conf
+
 # make sure common branches are available for git-buildpackage
-create_local_branch upstream
-create_local_branch debian
-create_local_branch pristine-tar
+create_local_branch ${UPSTREAM_BRANCH}
+create_local_branch ${DEBIAN_BRANCH}
+if [ ${PRISTINE_TAR} = 'true' ]; then
+  create_local_branch pristine-tar
+fi
 
 # check out the according branch/tag with help of $random_branch
 branch_checkout
@@ -288,7 +342,7 @@ gbp_opts
 if [ "${IGNORE_GIT_BUILDPACKAGE:-}" = "true" ] ; then
   echo "Skipping git-buildpackage execution as requested via IGNORE_GIT_BUILDPACKAGE ***"
 else
-  git-buildpackage ${GBP_OPTS}
+  git-buildpackage ${GBP_OPTS:-}
 fi
 
 quilt_cleanup

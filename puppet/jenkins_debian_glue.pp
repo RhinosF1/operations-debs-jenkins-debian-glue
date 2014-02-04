@@ -158,11 +158,23 @@ class jenkins::software {
     require => Package['jenkins'],
   }
 
+  jenkins::plugin::install { 'timestamper':
+    require => Package['jenkins'],
+  }
+
   jenkins::plugin::install { 'ws-cleanup':
     require => Package['jenkins'],
   }
 
   package { 'default-jre-headless':
+    ensure  => present,
+  }
+
+  # fix java headless issue, might also require
+  #  sudo java -jar /usr/lib/jvm/java-6-openjdk-common/jre/lib/compilefontconfig.jar \
+  #    /etc/java-6-openjdk/fontconfig.properties \
+  #    /usr/lib/jvm/java-6-openjdk-common/jre/lib/fontconfig.bfc
+  package { 'ttf-dejavu':
     ensure  => present,
   }
 
