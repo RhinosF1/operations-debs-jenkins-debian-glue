@@ -1,3 +1,75 @@
+jenkins-debian-glue (0.10.0) unstable; urgency=medium
+
+   The "have fun with pep8 checks" release
+
+  [ Michael Prokop ]
+  * [ed2b47a] New script pep8_tap to check python code via pep8
+  * [f9cfb58] Recommends pep8 >= 1.4.6~ as we depend on its '--format'
+    option
+  * [e4172ea] generate-git-snapshot: fail if git-dch doesn't support
+    --distribution but $DIST is set
+  * [99353c1] jenkins-debian-glue-buildenv-taptools: it's libperl-critic-
+    perl, not perlcritic
+  * [0767dd5] pep8_tap: adjust Encoding handling for ruby1.8
+  * [a1f0576] Fix script name of pep8_tap
+  * [cea1830] pep8_tap: further fix for encoding issue with ruby1.8
+  * [b756c64] Clarify Depends/Recommends of jenkins-debian-glue-buildenv-
+    taptools
+
+  [ Christian Hofstaedtler ]
+  * [cfdec26] Allow overriding the source package dist
+  * [22ac5fa] Install pep8_tap tool
+  * [1f796f0] pep8_tap: improve formatting
+  * [325f1dd] pep8_tap: fix counter
+  * [5dc4fe0] pep8_tap: Fix crash with invalid encoded source data
+  * [870f61a] pep8_tap: ignore non-Python files
+  * [f9a139d] tap_tool_dispatcher: run all tools in parallel
+  * [5d33d21] pep8_tap: don't re-enable default-disabled checkers
+
+ -- Michael Prokop <prokop@grml-solutions.com>  Wed, 04 Jun 2014 16:56:34 +0200
+
+jenkins-debian-glue (0.9.0) unstable; urgency=medium
+
+  The "lunch break" release
+
+  [ Patrick Schoenfeld ]
+  * [08248d6] Pass DIST and ARCH to cowbuilder call
+
+  [ Edwin Fine ]
+  * [29611c6] Empty 'distribution' and 'architecture' env vars now do not
+    break script when calling cowbuilder.
+
+  [ Michael Prokop ]
+  * [e116dbb] puppet: allow DIST + ARCH in sudo configuration
+  * [dbdea39] generate-git-snapshot: Support PRE_DCH_HOOK variable for
+    custom scripts. Thanks to Rudolph Bott <bott@sipgate.de> for the patch
+  * [811aef7] debian/copyright: fix Upstream-Name header
+  * [36cca60] Support skipping adt tests by setting ADT=skip. Thanks to
+    Christoph Berg
+  * [4020157] lintian-junit-report: do not use "--" as option separator
+  * [757c0cc] Adjust Recommends for REPOSITORY_EXTRA feature + minor style
+    improvements
+  * [578bb8d] puppet: Enable "Raw HTML" option and move systemMessage into
+    View
+  * [ac5dd5b] Bump Dependency on openjdk-6-jre-headless to openjdk-7-jre-
+    headless
+
+  [ Jean Baptiste Favre ]
+  * [a9ab5cc] No need to source /etc/jenkins/debian-glue twice in the same
+    script
+
+  [ Lukas Anzinger ]
+  * [b37d310] generate-reprepro-codename: Accept origin and suite as
+    command line arguments.
+
+  [ Mathieu Parent ]
+  * [4c329b3] Don't use --git-export-dir
+
+  [ Andrey Elmanov ]
+  * [0a4191c] Allow adding extra repositories for resolving dependencies
+
+ -- Michael Prokop <prokop@grml-solutions.com>  Fri, 16 May 2014 12:56:48 +0200
+
 jenkins-debian-glue (0.8.1) unstable; urgency=medium
 
   * [01b8a46] Revert "build-and-provide-package: use -b for package builds

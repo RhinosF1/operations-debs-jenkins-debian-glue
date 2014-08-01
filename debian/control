@@ -15,7 +15,9 @@ Depends: fakeroot,
          reprepro | freight,
          sudo | sudo-ldap,
          ${misc:Depends}
-Recommends: jenkins-debian-glue-buildenv-git
+Recommends: curl,
+            gnupg,
+            jenkins-debian-glue-buildenv-git
 Description: glue scripts for building Debian packages inside Jenkins
  This package provides scripts which should make building Debian
  package inside Jenkins (a Continuous Integration suite) easier.
@@ -66,7 +68,7 @@ Package: jenkins-debian-glue-buildenv-slave
 Architecture: all
 Depends: build-essential,
          jenkins-debian-glue-buildenv,
-         openjdk-6-jre-headless | sun-java6-jre | java-runtime-headless,
+         openjdk-7-jre-headless | sun-java6-jre | java-runtime-headless,
          rsync,
          ${misc:Depends}
 Description: virtual package for basic build environment of jenkins-debian-glue
@@ -86,17 +88,23 @@ Description: lintian integration in Jenkins
 Package: jenkins-debian-glue-buildenv-taptools
 Architecture: all
 Depends: devscripts,
+         file,
          libperl-critic-perl,
+         parallel,
          ruby,
          ${misc:Depends}
+Recommends: pep8 (>= 1.4.6~)
 Description: taptools integration in Jenkins
- This package provides scripts to check shell and perl source code
- for common errors, using checkbashism and perlcritic to
- generate according TAP reports for usage inside Jenkins.
+ This package provides scripts to check Shell, Perl and Python
+ source code for common errors, using checkbashism and perlcritic
+ to generate according TAP reports for usage inside Jenkins.
  .
  The provided tap_tool_dispatcher script can be used to automatically
- detect according shell scripts and perl scripts to execute
- checkbashism_tap and perlcritic_tap accordingly.
+ detect according Shell scripts, Perl and Python scripts to execute
+ checkbashism_tap, perlcritic_tap and pep8_tap accordingly.
+ .
+ Please notice that pep8 isn't a hard dependency because it's not yet
+ available in the required version in Debian/wheezy.
 
 Package: jenkins-debian-glue-buildenv-piuparts
 Architecture: all
