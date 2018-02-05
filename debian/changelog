@@ -1,3 +1,15 @@
+jenkins-debian-glue (0.18.4-wmf1) jessie-wikimedia; urgency=medium
+
+  * Add gbp basic configuration
+  * Change package format from native to quilt
+  * cherry-pick a patch to be able to run lintian in the cowbuilder
+    environement instead of the version from the building host:
+  * [Victor Seva]
+    [e2beae59] support process a lintian output file
+  * Fix https://phabricator.wikimedia.org/T186494
+
+ -- Antoine Musso <hashar@free.fr>  Mon, 05 Feb 2018 10:33:37 +0100
+
 jenkins-debian-glue (0.18.4) unstable; urgency=medium
 
   [ Michael Prokop ]
