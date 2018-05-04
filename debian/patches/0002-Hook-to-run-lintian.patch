@@ -7,17 +7,17 @@ the host lintian version.
 
 Change-Id: I01137a1f621061f5063c8624b9e6eaac44405d8d
 ---
- pbuilder-hookdir/B90lintian       | 40 +++++++++++++++++++++++++++++++++++++++
+ pbuilder-hookdir/B90lintian       | 42 +++++++++++++++++++++++++++++++++++++++
  scripts/build-and-provide-package |  6 ++++++
- 2 files changed, 46 insertions(+)
+ 2 files changed, 48 insertions(+)
  create mode 100755 pbuilder-hookdir/B90lintian
 
 diff --git a/pbuilder-hookdir/B90lintian b/pbuilder-hookdir/B90lintian
 new file mode 100755
-index 0000000..5d52f1c
+index 0000000..00edc49
 --- /dev/null
 +++ b/pbuilder-hookdir/B90lintian
-@@ -0,0 +1,40 @@
+@@ -0,0 +1,42 @@
 +#!/bin/bash
 +#
 +# Hook to run lintian inside the cowbuilder environment.
@@ -38,7 +38,9 @@ index 0000000..5d52f1c
 +apt-get -y "${APTGETOPT[@]}" install lintian
 +lintian --version
 +
-+PACKAGE_NAME=$(basename "$(realpath "$BUILDDIR"/*/debian/..)")
++package_dir=$(cd "$BUILDDIR"/*/debian/.. 2>/dev/null && pwd -P)
++PACKAGE_NAME=$(basename "$package_dir")
++
 +echo "Found package name: $PACKAGE_NAME"
 +
 +# Requires a .pbuilderrc with:

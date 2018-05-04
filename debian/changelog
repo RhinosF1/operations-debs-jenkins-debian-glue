@@ -1,3 +1,11 @@
+jenkins-debian-glue (0.18.4-wmf3) jessie-wikimedia; urgency=medium
+
+  * Fix B90lintian hook not finding the package name. It used
+    /usr/bin/realpath without installing coreutils. Switch to a pure bash
+    version (cd x; pwd -P).  Closes T193906
+
+ -- Antoine Musso <hashar@free.fr>  Fri, 04 May 2018 22:09:48 +0200
+
 jenkins-debian-glue (0.18.4-wmf2) jessie-wikimedia; urgency=medium
 
   * Add B90lintian hook to run lintian inside the cowbuilder env
